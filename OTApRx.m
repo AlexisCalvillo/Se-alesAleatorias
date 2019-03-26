@@ -1,6 +1,7 @@
 function OTApRx(p,tiempo,lambda,ensayos,subdiv,tini)
 close all;
 %Matriz OTA y matriz de Tiempos
+
 for j=1:ensayos
     i=1;
     OTA(j,i)=1-2*(rand()<p);
@@ -11,6 +12,7 @@ for j=1:ensayos
         i=i+1;
     end
 end
+
 T=[0.*T(:,1) T];
 %Matriz de valores
 MV=zeros(subdiv,ensayos);
