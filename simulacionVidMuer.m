@@ -1,0 +1,50 @@
+function simulacionVidMuer(pa,pb,nT,k,nTray)
+%pa     Probabilidad de llegada
+%pb     Probabilidad de salida
+%nT     Número de tiempos
+%k      Capacidad del "servidor"
+%nTray  Número de trayectorias 
+close all;
+
+numK=zeros(nTray,nT);
+
+%Estados iniciales del servidor
+numK(:,1)=randi(k,nTray,1);
+
+for i=1:nTray
+    for j=1:nT-1
+        numK(i,j+1)=numK(i,j)+((rand()<pa).*(numK(i,j)<k))-((rand()<pb).*(numK(i,j)>0));
+    end
+end
+
+xt=linspace(1,nT,nT);
+%Gráfica de tres trayectorias típicas
+for i=1:3
+    figure(i);
+    ssf=sprintf('Trayectoria típica número %d',i);
+    stairs(xt,numK(i,:)),title(ssf);
+    axis([-nT*.02,nT+1,-1,k+1])
+    xlabel('Tiempo');
+    ylabel('Número de clientes en el sistema');
+end
+
+%Distribución de estados
+ppi=zeros(1,k+1);
+for i=1:k+1
+    ppi(i)=sum(sum(numK==i-1))/(nTray*nT);
+end
+%Comprobación de que es una distribución
+sum(ppi)
+
+%Vector de estado, sólo para graficar
+xk=[0:1:k];
+
+figure(4)
+stem(xk,ppi,'x')
+hold on;
+ssf=sprintf('Distribución de estados de un servidor con %d de capacidad y \n %d Pasos \n %d Trayectorias \n pLlegada = %f pSalida = %f',...
+    k,nT,nTray,pa,pb);
+plot(xk,ppi,'--'),title(ssf);
+xlabel('Número de clientes');
+ylabel('Pi');
+end
