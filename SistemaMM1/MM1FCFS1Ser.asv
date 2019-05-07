@@ -74,14 +74,18 @@ end
 N=Nt(x0:x1,:);
 stairs(N(:,1))
 for i=1:max(Nt(:,1))+1
-    aux=cumsum(Nt(:,1)==i-1);
+    aux1=find(Nt(:,1)==i-1);
+    aux2=aux1+1;
+    t=Nt(aux1,:)-Nt(aux2,:)
     P(i)=aux(length(Nt(:,1)));
 end
 P=P/length(Nt(:,1));
 figure(2)
-plot([0:1:max(Nt(:,1))],P)
-
+subplot(2,1,1)
+stem([0:1:max(Nt(:,1))],P,'ok')
+subplot(2,1,2)
+stem([0:1:max(Nt(:,1))],cumsum(P),'ok')
 %Verificación de Little
-j=trapz(Nt(1:max([i,k]),2),Nt(1:max([i,k]),1))/max(Nt(1:max([i,k]),2))
-d=mean(Te(1:max([i,k-1]))+Ts(1:max([i,k-1]))).*lambda
-(j-d)/j
+j=trapz(Nt(1:min([i,k]),2),Nt(1:min([i,k]),1))/max(Nt(1:min([i,k]),2))
+d=mean(Te(1:min([i,k-1]))+Ts(1:min([i,k-1]))).*lambda;
+abs(d-j)
