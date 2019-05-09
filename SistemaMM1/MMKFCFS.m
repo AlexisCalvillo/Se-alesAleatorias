@@ -60,7 +60,7 @@ figure(2)
 subplot(2,1,1)
 stem([0:1:max(Nt(:,1))],P,'ok')
 subplot(2,1,2)
-stem([0:1:max(Nt(:,1))],cumsum(P),'ok')
+stem([0:1:max(Nt(:,1))],cumsum(P),'ok');
 %Verificación de Little
 N=trapz(Nt(1:min([i,k]),2),Nt(1:min([i,k]),1))/max(Nt(1:min([i,k]),2))
 T=mean(Te(1:min([i,k-1]))+Ts(1:min([i,k-1])))
