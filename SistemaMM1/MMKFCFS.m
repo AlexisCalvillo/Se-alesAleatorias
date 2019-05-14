@@ -1,13 +1,13 @@
-function MMKFCFS(n,mi,lambda,x0,x1,ks)
+function [P,N]=MMKFCFS(n,mi,lambda,x0,x1,ks)
 %Simulación de un sistema MM2. FCFS
 
 %     n: Número de eventos
 %    mi: Media del tiempo de servicios 
 %lambda: Tasa de llegadas
 %x0--x1: Estado del sistema durante los servicios x1-x0
-close all;
+%close all;
 %Tiempos de llegada
-Ti=-log(rand(1,n+1))/lambda;
+Ti=-log(rand(1,n+1))*lambda;
 Ti=cumsum(Ti);
 %Tiempos de servicio
 Ts=-log(rand(1,n+1))/mi;
@@ -44,8 +44,8 @@ while k<n
     end
 end
 
-N=Nt(x0:x1,:);
-stairs(N(:,1))
+%N=Nt(x0:x1,:);
+%stairs(N(:,1))
 for j=1:max(Nt(:,1))+1
     aux1=find(Nt(:,1)==j-1);
     if aux1(length(aux1))==length(Nt(:,1))
@@ -56,14 +56,14 @@ for j=1:max(Nt(:,1))+1
     P(j)=tsum;
 end
 P=P/max(Nt(:,2));
-figure(2)
-subplot(2,1,1)
-stem([0:1:max(Nt(:,1))],P,'ok')
-subplot(2,1,2)
-stem([0:1:max(Nt(:,1))],cumsum(P),'ok');
+%figure(2)
+%subplot(2,1,1)
+%stem([0:1:max(Nt(:,1))],P,'ok')
+%subplot(2,1,2)
+%stem([0:1:max(Nt(:,1))],cumsum(P),'ok');
 %Verificación de Little
-N=trapz(Nt(1:min([i,k]),2),Nt(1:min([i,k]),1))/max(Nt(1:min([i,k]),2))
-T=mean(Te(1:min([i,k-1]))+Ts(1:min([i,k-1])))
-abs(N-T./lambda)
-P(1)
-P(2)
+N=trapz(Nt(1:min([i,k]),2),Nt(1:min([i,k]),1))/max(Nt(1:min([i,k]),2));
+T=mean(Te(1:min([i,k-1]))+Ts(1:min([i,k-1])))*lambda/ks;
+abs(N-T.*lambda);
+%P(1)
+%P(2)
